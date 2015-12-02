@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:activity="com.example.roxanaohriniuc.petmartsuper.ProductDescriptionActivity">
+      <item android:id="@+id/signout"
+            android:title="Sign Out"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.roxanaohriniuc.petmartsuper" >
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ShoppingCartActivity"
+            android:label="@string/title_activity_shopping_cart"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".CheckoutActivity"
+            android:label="@string/title_activity_checkout"
+            android:parentActivityName=".ShoppingCartActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ProductDescriptionActivity"
+            android:label="@string/title_activity_product_description"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".AdminLoginActivity"
+            android:label="@string/title_activity_admin_login" >
+        </activity>
+        <activity
+            android:name=".ViewProfitsActivity"
+            android:label="@string/title_activity_view_profits" >
+        </activity>
+        <activity
+            android:name=".ViewProductActivity"
+            android:label="@string/title_activity_view_product" >
+        </activity>
+        <activity
+            android:name=".EditProductActivity"
+            android:label="@string/title_activity_edit_product" >
+        </activity>
+    </application>
+
+</manifest>

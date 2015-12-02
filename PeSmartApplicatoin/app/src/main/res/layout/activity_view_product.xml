@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:activity="com.example.roxanaohriniuc.petmartsuper.ProductDescriptionActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aProductNameTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18sp"
+        android:paddingTop="20dp"
+        android:editable="false"
+        android:text="Name"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aProductDescriptionTextView"
+        android:layout_below="@+id/aProductNameTextView"
+        android:textSize="18sp"
+        android:paddingTop="20dp"
+        android:enabled="false"
+        android:editable="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Product Description"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aUnitCostTextView"
+        android:layout_below="@+id/aProductDescriptionTextView"
+        android:clickable="false"
+        android:textSize="18sp"
+        android:paddingTop="20dp"
+        android:text="Unit Cost"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aUnitPricetextView"
+        android:layout_below="@+id/aUnitCostTextView"
+        android:paddingTop="20dp"
+        android:hint="Unit Price"
+        android:textSize="20sp"
+        android:text="UnitPrice"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aQuantityInStockTextView"
+        android:layout_below="@+id/aUnitPricetextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20sp"
+        android:paddingTop="20dp"
+        android:textColor="#000000"
+        android:text="Quantity In Stock"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aCategoryTextView"
+        android:layout_below="@+id/aQuantityInStockTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20sp"
+        android:paddingTop="20dp"
+        android:textColor="#000000"
+        android:text="Category"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Product"
+        android:id="@+id/aEditProductfromDescriptionButton"
+        android:textSize="20sp"
+        android:layout_above="@+id/aReturnToInventoryButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Return to Inventory"
+        android:id="@+id/aReturnToInventoryButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+</RelativeLayout>
