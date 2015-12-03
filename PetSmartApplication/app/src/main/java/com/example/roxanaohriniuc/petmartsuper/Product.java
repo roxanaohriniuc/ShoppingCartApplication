@@ -2,9 +2,7 @@ package com.example.roxanaohriniuc.petmartsuper;
 
 import java.io.Serializable;
 
-/**
- * Created by Roxana Ohriniuc on 11/21/2015.
- */
+
 public class Product implements Serializable {
 
     private String mPName;
@@ -77,7 +75,9 @@ public class Product implements Serializable {
     public void setPrice(double price) {
         mPrice = price;
     }
-
+    /*
+    @return cost
+     */
     public double getCost() {
         return mCost;
     }
@@ -88,7 +88,7 @@ public class Product implements Serializable {
 
     /**
      * Returns the Product Name.
-     * @return
+     * @return Pname
      */
     public String getPName() {
         return mPName;
@@ -133,6 +133,9 @@ public class Product implements Serializable {
     public void setCategory(String category) {
         mCategory = category;
     }
+    /*
+    @return product id
+     */
     public String getId() {
         return mId;
     }

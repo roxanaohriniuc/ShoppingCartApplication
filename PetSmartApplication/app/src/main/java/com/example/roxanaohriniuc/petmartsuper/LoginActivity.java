@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     String url = "http://shoppingcart-api-8000.herokuapp.com/api/accounts";
     private  static final String TAG = MainActivity.class.getSimpleName();
     ConnectivityManager manager;
+    //create a custom util class
     protected final PetMartSuperUtils utils = new PetMartSuperUtils();
 
     @Override
@@ -46,7 +47,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        /*
+*       create login button that redirects user to main activity class
+*        */
         Button mLoginButton = (Button) findViewById(R.id.loginButton);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        /* throw exception if there is no active network*/
                         Toast.makeText(LoginActivity.this, R.string.network_unavailable_message, Toast.LENGTH_LONG);
                     }
                 }

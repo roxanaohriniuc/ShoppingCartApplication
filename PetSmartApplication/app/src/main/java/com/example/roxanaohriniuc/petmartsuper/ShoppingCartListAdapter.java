@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by roxanaohriniuc on 11/30/15.
- */
+
 public class ShoppingCartListAdapter extends BaseAdapter {
     ShoppingCart shoppingCart = ShoppingCart.getInstance();
     Inventory inventory = Inventory.getInstance();

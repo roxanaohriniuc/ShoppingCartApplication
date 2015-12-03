@@ -14,9 +14,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-/**
- * Created by roxanaohriniuc on 11/30/15.
- */
+
 public class PetMartSuperUtils {
 
     public static final MediaType JSON

@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by roxanaohriniuc on 12/1/15.
- */
+
 public class AdminListAdapter extends BaseAdapter {
 
         private final AdminActivity mActivity;
@@ -27,12 +25,17 @@ public class AdminListAdapter extends BaseAdapter {
             mProducts = inventory.getProducts();
             mManager = manager;
         }
-
+        /*
+        @return number of products
+         */
         @Override
         public int getCount() {
             return mProducts.size();
         }
-
+        /*
+        @param positon of item
+        @return product
+         */
         @Override
         public Product getItem(int position) {
             return mProducts.get(position);
@@ -42,7 +45,11 @@ public class AdminListAdapter extends BaseAdapter {
         public long getItemId(int position) {
             return 0;
         }
-
+        /*
+        @params in position
+        @params view
+        @params view group
+         */
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ViewHolder holder;

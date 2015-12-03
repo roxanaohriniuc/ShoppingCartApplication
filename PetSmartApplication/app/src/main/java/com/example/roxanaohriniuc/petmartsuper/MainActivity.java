@@ -109,6 +109,7 @@ public class MainActivity extends ListActivity {
         }else{
             UpdateTotal();
         }
+        //set shopping cart button redirects user to shopping cart activty class
         mViewCart= (Button) findViewById(R.id.ShoppingCartButton);
         mViewCart.setOnClickListener(new View.OnClickListener() {
             @Override

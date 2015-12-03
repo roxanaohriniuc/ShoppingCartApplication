@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by Roxana Ohriniuc on 11/21/2015.
- */
+
 public class MainListAdapter extends BaseAdapter {
     private final MainActivity mActivity;
 

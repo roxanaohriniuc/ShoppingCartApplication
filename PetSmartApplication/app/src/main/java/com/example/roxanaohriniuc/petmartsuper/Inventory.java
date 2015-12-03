@@ -7,9 +7,6 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by roxanaohriniuc on 11/26/15.
- */
 public class Inventory implements Serializable {
     private ArrayList<Product> mProducts;
     private static Inventory inventory = new Inventory();
@@ -21,19 +18,29 @@ public class Inventory implements Serializable {
     public static Inventory getInstance(){
         return inventory;
     }
-
+    /*
+    @param product
+    @return boolean value when product is added
+     */
     public boolean addProduct(Product p){
         mProducts.add(p);
         return true;
     }
+    /*
+    @param product
+     */
     public void removeProduct(Product p){
 
     }
-
+    /*
+    @return arraylist of products
+     */
     public ArrayList<Product> getProducts() {
         return mProducts;
     }
-
+    /*
+    @param arraylist of products
+     */
     public void setProducts(ArrayList<Product> products){
         mProducts = products;
     }
@@ -58,7 +65,10 @@ public class Inventory implements Serializable {
 
         }
     }
-
+    /*
+    @param string id of product
+    @return product based off id
+     */
     public Product getProductById(String id) {
 
         for (Product p : mProducts) {
