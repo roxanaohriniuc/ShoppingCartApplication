@@ -86,7 +86,7 @@ public class ViewProfitsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // return to inventory
-                Intent intent = new Intent(ViewProfitsActivity.this, AdminLoginActivity.class);
+                Intent intent = new Intent(ViewProfitsActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });

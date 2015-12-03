@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 public class ProductDescriptionActivity extends AppCompatActivity {
     protected Button mAddToCartButton;
     protected Button mReturnToSearchButton;
@@ -23,10 +21,9 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     protected TextView mProductPrice;
     protected TextView mProductQuantity;
     protected TextView mProductCategory;
-    private  ArrayList<Product> mProducts;
-    private  ArrayList<CartItem> mCart;
+
     protected PetMartSuperUtils utils = new PetMartSuperUtils();
-    protected ShoppingCart cart = ShoppingCart.getInstance();
+    ShoppingCart shoppingCart = ShoppingCart.getInstance();
     Inventory inventory = Inventory.getInstance();
 
 
@@ -40,8 +37,6 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
         setContentView(R.layout.activity_product_description);
-        mProducts = inventory.getProducts();
-        mCart = cart.getProducts();
 
         // get bundle and initialize it to a product
         Intent intent=getIntent();
@@ -68,36 +63,30 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         mAddToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CartItem item = new CartItem();
-                item.setProduct(product);
-                item.setQuantity(1);
-                cart.addProduct(item);
                 Toast.makeText(ProductDescriptionActivity.this,
                         "Your item was added to the shopping cart.", Toast.LENGTH_LONG);
                 int updatedQuantity = product.getQuantityAvailable();
-                int cartItemPos = cart.getCartItemIndex(product);
                 if (updatedQuantity == 0) {
                     //Toast infoM = new Toast("Out of stock");
                     Toast toast = Toast.makeText(ProductDescriptionActivity.this,
                             "Sorry, the Product is out of stock!", Toast.LENGTH_LONG);
                 } else {
+                    int cartItemPos = shoppingCart.getCartItemIndex(product);
                     if (cartItemPos == -1) {
-                        mCart.add(item);
+                        CartItem item = new CartItem();
+                        item.setProduct(product);
+                        item.setQuantity(1);
+                        shoppingCart.getProducts().add(item);
                     } else {
-                        int cartQuantity = mCart.get(cartItemPos).getQuantity() + 1;
-                        mCart.get(cartItemPos).setQuantity(cartQuantity);
+                        int cartQuantity = shoppingCart.getProducts().get(cartItemPos).getQuantity() + 1;
+                       shoppingCart.getProducts().get(cartItemPos).setQuantity(cartQuantity);
                     }
                     // update database with quantity of products
                     updatedQuantity--;
-                    String mProductId =product.getId();
+                    inventory.getProductById(product.getId()).setQuantityAvailable(updatedQuantity);
 
-                    product.setQuantityAvailable((updatedQuantity));
-                    //update singletons
-                    inventory.setProducts(mProducts);
-                    cart.setProducts(mCart);
                     mProductQuantity.setText("Quantity: " + updatedQuantity);
-                    utils.addToShoppingCartDB(manager, mAccount, mProductId);
-
+                    utils.addToShoppingCartDB(manager, mAccount, product.getId());
                 }
             }
         });
@@ -114,12 +103,9 @@ public class ProductDescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDescriptionActivity.this,
                         MainActivity.class);
-                intent.putExtra("accountId", mAccount);
+                intent.putExtra("accountID", mAccount);
                 intent.putExtra("fromDescription", true);
                 startActivity(intent);
-                // add functionality here --> needs to pass json account id.
-
-
             }
         });
     }

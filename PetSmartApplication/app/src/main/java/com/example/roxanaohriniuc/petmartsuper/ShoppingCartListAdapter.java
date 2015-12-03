@@ -10,39 +10,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 /**
  * Created by roxanaohriniuc on 11/30/15.
  */
-public class OrderView extends BaseAdapter {
-    private ArrayList<Product> mProducts;
-    private ArrayList<CartItem> mCartItems;
-    private double mTotalPrice = 0;
+public class ShoppingCartListAdapter extends BaseAdapter {
     ShoppingCart shoppingCart = ShoppingCart.getInstance();
     Inventory inventory = Inventory.getInstance();
-    private String mAccount;
+    private String accountID;
     private PetMartSuperUtils utils = new PetMartSuperUtils();
     private final ConnectivityManager mManager;
+
     private TextView mTotalText;
     private final ShoppingCartActivity mShoppingCartActivity;
 
-    public OrderView(ShoppingCartActivity shoppingCartActivity, String accountId, ConnectivityManager manager, TextView totalText){
-        mAccount = accountId;
+    public ShoppingCartListAdapter(ShoppingCartActivity shoppingCartActivity, String accountId, ConnectivityManager manager, TextView totalText){
+        accountID = accountId;
         mShoppingCartActivity = shoppingCartActivity;
-        mProducts =  inventory.getProducts();
-        mCartItems = shoppingCart.getProducts();
         mManager = manager;
         mTotalText = totalText;
     }
     @Override
     public int getCount() {
-        return mCartItems.size();
+        return shoppingCart.getProducts().size();
     }
 
     @Override
     public CartItem getItem(int position) {
-        return mCartItems.get(position);
+        return shoppingCart.getProducts().get(position);
     }
 
     @Override
@@ -68,18 +62,19 @@ public class OrderView extends BaseAdapter {
         else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.mProductName.setText(mCartItems.get(position).getProduct().getPName());
-        holder.mProductPrice.setText(mCartItems.get(position).getProduct().getPrice()+ "");
-        holder.mQuantityInCart.setText(mCartItems.get(position).getQuantity() + "");
+        final CartItem selectedItem = shoppingCart.getProducts().get(position);
+
+        holder.mProductName.setText(selectedItem.getProduct().getPName());
+        holder.mProductPrice.setText(selectedItem.getProduct().getPrice()+ "");
+        holder.mQuantityInCart.setText(selectedItem.getQuantity() + "");
 
         // on pressing the "+" button
         holder.mAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CartItem item = mCartItems.get(position);
-                Product product = inventory.getProductById(item.getProduct().getId());
 
-                int cartQuantity = item.getQuantity();
+                Product product = inventory.getProductById(selectedItem.getProduct().getId());
+                int cartQuantity = selectedItem.getQuantity();
                 int updatedQuantity = product.getQuantityAvailable();
 
                 if (updatedQuantity == 0) {
@@ -91,13 +86,11 @@ public class OrderView extends BaseAdapter {
                     cartQuantity++;
 
                     inventory.getProductById(product.getId()).setQuantityAvailable(updatedQuantity);
-                    mProducts = inventory.getProducts();
-                    mCartItems.get(position).setQuantity(cartQuantity);
-                    shoppingCart.setProducts(mCartItems);
-                    holder.mQuantityInCart.setText(cartQuantity + "");
-                    utils.addToShoppingCartDB(mManager, mAccount, product.getId());
-                    mShoppingCartActivity.UpdateTotal();
+                    shoppingCart.getProducts().get(position).setQuantity(cartQuantity);
 
+                    holder.mQuantityInCart.setText(cartQuantity + "");
+                    utils.addToShoppingCartDB(mManager, accountID, product.getId());
+                    mShoppingCartActivity.UpdateTotal();
                 }
             }
         });
@@ -105,7 +98,7 @@ public class OrderView extends BaseAdapter {
         holder.mDeleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CartItem item = mCartItems.get(position);
+                CartItem item = shoppingCart.getProducts().get(position);
                 Product product = inventory.getProductById(item.getProduct().getId());
 
                 int cartQuantity = item.getQuantity();
@@ -118,21 +111,18 @@ public class OrderView extends BaseAdapter {
                     // update database with quantity of products
                     updatedQuantity++;
                     inventory.getProductById(product.getId()).setQuantityAvailable(updatedQuantity);
-                    mProducts = inventory.getProducts();
                     cartQuantity--;
                     if(cartQuantity == 0) {
-                        mCartItems.remove(position);
+                        shoppingCart.getProducts().remove(position);
                         notifyDataSetChanged();
                     }
                     else
-                        mCartItems.get(position).setQuantity(cartQuantity);
+                        shoppingCart.getProducts().get(position).setQuantity(cartQuantity);
 
 
                     holder.mQuantityInCart.setText(cartQuantity + "");
-                    utils.removeFromShoppingCartDB(mManager, mAccount, product.getId());
+                    utils.removeFromShoppingCartDB(mManager, accountID, product.getId());
                 }
-                shoppingCart.setProducts(mCartItems);
-               // ((MainActivity) holder).UpdateTotal();
                 mShoppingCartActivity.UpdateTotal();
                 }
         });
@@ -141,22 +131,12 @@ public class OrderView extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(mShoppingCartActivity,
                         ProductDescriptionActivity.class);
-                intent.putExtra("product", mProducts.get(position));
-                intent.putExtra("accountId", mAccount);
+                intent.putExtra("product", inventory.getProducts().get(position));
+                intent.putExtra("accountID", accountID);
                 mShoppingCartActivity.startActivity(intent);
             }
         });
         return convertView;
-    }
-
-    private void UpdateTotal()
-    {
-        double total = 0;
-        for(CartItem item : shoppingCart.getProducts() )
-        {
-            total += (item.getQuantity() * item.getProduct().getPrice());
-        }
-        mTotalText.setText(String.format("%.2f", total));
     }
 
     /**

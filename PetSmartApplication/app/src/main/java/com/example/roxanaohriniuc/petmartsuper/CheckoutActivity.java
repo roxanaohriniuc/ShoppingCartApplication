@@ -25,8 +25,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private EditText mExpDate;
     PetMartSuperUtils utils = new PetMartSuperUtils();
     private Inventory inventory = Inventory.getInstance();
-    private ShoppingCart mShoppingCart = ShoppingCart.getInstance();
-    private String mAccountID;
+    private ShoppingCart shoppingCart = ShoppingCart.getInstance();
+    private String accountID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         Bundle extras = getIntent().getExtras();
         if(extras!= null){
-            mAccountID = extras.getString("accountID");
+            accountID = extras.getString("accountID");
         }
 
 
@@ -70,16 +70,16 @@ public class CheckoutActivity extends AppCompatActivity {
 
                     //calculate totals
                     double totalPrice =0; double totalCost = 0;
-                    for(CartItem c : mShoppingCart.getProducts())
+                    for(CartItem c : shoppingCart.getProducts())
                     {
                         totalPrice += (c.getQuantity() * c.getProduct().getPrice());
                         totalCost += (c.getQuantity() * c.getProduct().getCost());
                     }
                     //POST new order (totalPrice, totalCost, accountId)
-                    //utils.placeOrder(manager, mAccountID, totalPrice, totalCost);
+                    utils.placeOrder(manager, accountID, totalPrice, totalCost);
                     //Clear Shoppingcart
-                    mShoppingCart.setProducts(new ArrayList<CartItem>());
-                    utils.clearShoppingCart(manager, mAccountID);
+                    shoppingCart.setProducts(new ArrayList<CartItem>());
+                    utils.clearShoppingCart(manager, accountID);
 
                     // confirmation message after checking all fields.
                     AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutActivity.this);

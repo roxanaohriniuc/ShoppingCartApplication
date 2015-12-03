@@ -27,18 +27,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends ListActivity {
-//
-    String url = "http://shoppingcart-api-8000.herokuapp.com/api/inventory";
     private  static final String TAG = MainActivity.class.getSimpleName();
-    private InventoryListAdapter mInventoryListAdapter;
+    private MainListAdapter mMainListAdapter;
     private Button mViewCart;
-    private Inventory inventory = Inventory.getInstance();
-    private ShoppingCart mShoppingCart = ShoppingCart.getInstance();
-    private String jsonAccount;
     protected TextView mTotalText;
-    private ArrayList<CartItem> mCart;
-    private String mAccountID;
+
+    private Inventory inventory = Inventory.getInstance();
+    private ShoppingCart shoppingCart = ShoppingCart.getInstance();
+    private String accountID;
     private PetMartSuperUtils utils = new PetMartSuperUtils();
+
+    private String jsonAccount;
+
 
 
     @Override
@@ -51,77 +51,82 @@ public class MainActivity extends ListActivity {
         // shopping cart amount
         mTotalText = (TextView) findViewById(R.id.totalPriceTextView);
 
+        mMainListAdapter = new MainListAdapter(MainActivity.this, accountID, manager);
+        setListAdapter(mMainListAdapter);
+
         Bundle extras = getIntent().getExtras();
         if(extras!= null){
             if(extras.getBoolean("fromDescription")){
-                mAccountID = extras.getString("accountId");
+                accountID = extras.getString("accountId");
             }
             else{
             jsonAccount = extras.getString("jsonAccount");
             try {
                 JSONObject jsonO = new JSONObject(jsonAccount);
-                mAccountID = jsonO.getString("_id");
+                accountID = jsonO.getString("_id");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             }
         }
-        // upload inventory from API
-        if(utils.isNetworkAvailable(manager)){
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(url).build();
+        if(inventory.getProducts().size() == 0) {//first time only
+            // upload inventory from API
+            if (utils.isNetworkAvailable(manager)) {
+                OkHttpClient client = new OkHttpClient();
+                String url = "http://shoppingcart-api-8000.herokuapp.com/api/inventory";
+                Request request = new Request.Builder().url(url).build();
 
-            Call call = client.newCall(request);
-            // set activity to a new thread.
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    // add error message here
-                }
-                @Override
-                public void onResponse(Response response) throws IOException {
-                    try {
-                        // if the response is successful, set product and update total.
-                        if (response.isSuccessful()) {
-                           String information = response.body().string();
-                           inventory.setProducts(information);
-                            InitialShoppingCart();
-                            UpdateTotal();
-
-                        } else {
-                        }
-                    } catch (Exception e) {
-                       Log.e(TAG, e.getMessage());
+                Call call = client.newCall(request);
+                // set activity to a new thread.
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        // add error message here
                     }
 
-                }
-            }); }
-        else{
-            Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG);
-        }
+                    @Override
+                    public void onResponse(Response response) throws IOException {
+                        try {
+                            // if the response is successful, set product and update total.
+                            if (response.isSuccessful()) {
+                                String information = response.body().string();
+                                inventory.setProducts(information);
+                                InitialShoppingCart();
+                                UpdateTotal();
+                                mMainListAdapter.notifyDataSetChanged();
+                            } else {
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                        }
 
+                    }
+                });
+            } else {
+                Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG);
+            }
+
+        }else{
+            UpdateTotal();
+        }
         mViewCart= (Button) findViewById(R.id.ShoppingCartButton);
         mViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateTotal();
-                Intent intent = new Intent(MainActivity.this, ShoppingCartActivity.class );
-                intent.putExtra("jsonAccount" ,jsonAccount);
+                Intent intent = new Intent(MainActivity.this, ShoppingCartActivity.class);
+                intent.putExtra("accountID", accountID);
                 startActivity(intent);
             }
         });
-        // insert InventoryListAdapter
-        utils.waitHere();
-        mInventoryListAdapter = new InventoryListAdapter(MainActivity.this, mAccountID, manager);
-        setListAdapter(mInventoryListAdapter);
     }
+
 
     /**
      * Sets the shopping cart from a JSON account object
      */
     private void InitialShoppingCart()
     {
-        mCart = new ArrayList<CartItem>();
+        ArrayList<CartItem> mCart = new ArrayList<CartItem>();
         try {
             JSONObject obj = new JSONObject(jsonAccount);
             JSONArray arr = obj.getJSONArray("shoppingcart");
@@ -135,7 +140,7 @@ public class MainActivity extends ListActivity {
                     mCart.add(item);
                 }
             }
-            mShoppingCart.setProducts(mCart);
+            shoppingCart.setProducts(mCart);
         }
         catch(Exception e)
         {e.printStackTrace();}
@@ -147,11 +152,12 @@ public class MainActivity extends ListActivity {
     public void UpdateTotal()
     {
         double total = 0;
-        for(CartItem item : mCart )
+        for(CartItem item : shoppingCart.getProducts() )
         {
             total += (item.getQuantity() * item.getProduct().getPrice());
         }
         mTotalText.setText(String.format("%.2f", total));
+        mTotalText.invalidate();
     }
 
 
@@ -169,11 +175,7 @@ public class MainActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.signout) {
           Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -181,15 +183,6 @@ public class MainActivity extends ListActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
-    /**
-     * Displays an Error message to screen.
-     */
-   public  void alertUserAboutError() {
-        AlertDialogFragment dialog = new AlertDialogFragment();
-        dialog.show(getFragmentManager(), "error_dialog");
-    }
-
 
 }

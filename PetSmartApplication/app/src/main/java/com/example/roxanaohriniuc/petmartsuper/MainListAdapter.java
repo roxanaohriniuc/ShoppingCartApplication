@@ -10,37 +10,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 /**
  * Created by Roxana Ohriniuc on 11/21/2015.
  */
-public class InventoryListAdapter extends BaseAdapter {
+public class MainListAdapter extends BaseAdapter {
     private final MainActivity mActivity;
-    private final ArrayList<Product> mProducts;
-    private final ArrayList<CartItem> mCart;
+
     ShoppingCart shoppingCart = ShoppingCart.getInstance();
     Inventory inventory = Inventory.getInstance();
-    private String mAccount;
+    private String accountID;
     private PetMartSuperUtils utils = new PetMartSuperUtils();
+
     private final ConnectivityManager mManager;
 
-    public InventoryListAdapter(MainActivity activity, String accountId, ConnectivityManager manager){
-        mAccount = accountId;
+    public MainListAdapter(MainActivity activity, String accountId, ConnectivityManager manager){
+        this.accountID = accountId;
         mActivity = activity;
-        mProducts =  inventory.getProducts();
-        mCart = shoppingCart.getProducts();
         mManager = manager;
     }
 
     @Override
     public int getCount() {
-        return mProducts.size();
+        return inventory.getProducts().size();
     }
 
     @Override
     public Product getItem(int position) {
-        return mProducts.get(position);
+        return inventory.getProducts().get(position);
     }
 
     @Override
@@ -63,14 +59,18 @@ public class InventoryListAdapter extends BaseAdapter {
         else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.mProductName.setText(mProducts.get(position).getPName());
-        holder.mProductPrice.setText(mProducts.get(position).getPriceAsString());
-        holder.mQuantityAvailable.setText(mProducts.get(position).getQuantityAvailable() + "");
+
+        final Product selectedProduct = inventory.getProducts().get(position);
+        holder.mProductName.setText(selectedProduct.getPName());
+        holder.mProductPrice.setText(selectedProduct.getPriceAsString());
+        holder.mQuantityAvailable.setText(selectedProduct.getQuantityAvailable() + "");
+
         holder.addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int updatedQuantity = mProducts.get(position).getQuantityAvailable();
-                int cartItemPos = shoppingCart.getCartItemIndex(mProducts.get(position));
+
+                int updatedQuantity = selectedProduct.getQuantityAvailable();
+                int cartItemPos = shoppingCart.getCartItemIndex(selectedProduct);
 
                 if (updatedQuantity == 0) {
                     //Toast infoM = new Toast("Out of stock");
@@ -79,22 +79,18 @@ public class InventoryListAdapter extends BaseAdapter {
                     if (cartItemPos == -1) {
                         CartItem item = new CartItem();
                         item.setQuantity(1);
-                        item.setProduct(mProducts.get(position));
-                        mCart.add(item);
+                        item.setProduct(selectedProduct);
+                        shoppingCart.addProduct(item);
                     } else {
-                        int cartQuantity = mCart.get(cartItemPos).getQuantity() + 1;
-                        mCart.get(cartItemPos).setQuantity(cartQuantity);
+                        int cartQuantity = shoppingCart.getProducts().get(cartItemPos).getQuantity() + 1;
+                        shoppingCart.getProducts().get(cartItemPos).setQuantity(cartQuantity);
                     }
                     // update database with quantity of products
-                    updatedQuantity--;
-                    String mProductId = mProducts.get(position).getId();
+                    String mProductId = selectedProduct.getId();
+                    inventory.getProducts().get(position).setQuantityAvailable((updatedQuantity));
 
-                    mProducts.get(position).setQuantityAvailable((updatedQuantity));
-                    //update singletons
-                    inventory.setProducts(mProducts);
-                    shoppingCart.setProducts(mCart);
                     holder.mQuantityAvailable.setText(updatedQuantity + "");
-                    utils.addToShoppingCartDB(mManager, mAccount, mProductId);
+                    utils.addToShoppingCartDB(mManager, accountID, mProductId);
 
                     mActivity.UpdateTotal();
                 }
@@ -105,8 +101,8 @@ public class InventoryListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(mActivity,
                         ProductDescriptionActivity.class);
-                intent.putExtra("product", mProducts.get(position));
-                intent.putExtra("accountId", mAccount);
+                intent.putExtra("product", inventory.getProducts().get(position));
+                intent.putExtra("accountID", accountID);
                 mActivity.startActivity(intent);
             }
         });

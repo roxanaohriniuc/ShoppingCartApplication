@@ -11,21 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 public class ShoppingCartActivity extends ListActivity {
 
-    protected OrderView mListAdapter;
-    protected ArrayList<CartItem> mCart;
+    protected ShoppingCartListAdapter mListAdapter;
     protected TextView mTotalText;
     protected Button mCheckout;
+
     Inventory inventory = Inventory.getInstance();
-    ShoppingCart mShoppingCart = ShoppingCart.getInstance();
-    protected String jsonAccount;
-    protected String mAccountID;
+    ShoppingCart shoppingCart = ShoppingCart.getInstance();
+    protected String accountID;
 
 
     @Override
@@ -38,13 +32,7 @@ public class ShoppingCartActivity extends ListActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!= null){
-            jsonAccount = extras.getString("jsonAccount");
-            try {
-                JSONObject jsonO = new JSONObject(jsonAccount);
-                mAccountID = jsonO.getString("_id");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            accountID = extras.getString("accountID");
         }
          //transfer data from main activity.
         mTotalText = (TextView) findViewById(R.id.totalPriceTextView);
@@ -55,11 +43,11 @@ public class ShoppingCartActivity extends ListActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShoppingCartActivity.this, CheckoutActivity.class);
-                intent.putExtra("accountID" ,mAccountID);
+                intent.putExtra("accountID" ,accountID);
                 startActivity(intent);
             }
         });
-        mListAdapter = new OrderView(ShoppingCartActivity.this, mAccountID, manager, mTotalText);
+        mListAdapter = new ShoppingCartListAdapter(ShoppingCartActivity.this, accountID, manager, mTotalText);
         setListAdapter(mListAdapter);
         UpdateTotal();
     }
@@ -94,11 +82,12 @@ public class ShoppingCartActivity extends ListActivity {
     public void UpdateTotal()
     {
         double total = 0;
-        for(CartItem item : mShoppingCart.getProducts() )
+        for(CartItem item : shoppingCart.getProducts() )
         {
             total += (item.getQuantity() * item.getProduct().getPrice());
         }
         mTotalText.setText(String.format("%.2f", total));
+        mTotalText.invalidate();
     }
 
 }

@@ -13,16 +13,16 @@ import java.util.ArrayList;
 /**
  * Created by roxanaohriniuc on 12/1/15.
  */
-public class AdminInventoryListAdapter extends BaseAdapter {
+public class AdminListAdapter extends BaseAdapter {
 
-        private final AdminLoginActivity mActivity;
+        private final AdminActivity mActivity;
         private final ArrayList<Product> mProducts;
         ShoppingCart shoppingCart = ShoppingCart.getInstance();
         Inventory inventory = Inventory.getInstance();
         private PetMartSuperUtils utils = new PetMartSuperUtils();
         private final ConnectivityManager mManager;
 
-        public AdminInventoryListAdapter(AdminLoginActivity activity, ConnectivityManager manager) {
+        public AdminListAdapter(AdminActivity activity, ConnectivityManager manager) {
             mActivity = activity;
             mProducts = inventory.getProducts();
             mManager = manager;

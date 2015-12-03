@@ -70,7 +70,7 @@ public class EditProductActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //return to inventory view.
-                    Intent intent = new Intent(EditProductActivity.this, AdminLoginActivity.class);
+                    Intent intent = new Intent(EditProductActivity.this, AdminActivity.class);
                     startActivity(intent);
                 }
             });
@@ -139,7 +139,7 @@ public class EditProductActivity extends AppCompatActivity {
                                 Double.parseDouble(cost),Integer.parseInt(quant));
                         inventory.addProduct(newProduct);
                         util.addToInventory(manager, newProduct);
-                        Intent intent = new Intent(EditProductActivity.this, AdminLoginActivity.class);
+                        Intent intent = new Intent(EditProductActivity.this, AdminActivity.class);
                         startActivity(intent);
                     }
 
@@ -150,7 +150,7 @@ public class EditProductActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //return to inventory view.
-                    Intent intent = new Intent(EditProductActivity.this, AdminLoginActivity.class);
+                    Intent intent = new Intent(EditProductActivity.this, AdminActivity.class);
                     startActivity(intent);
                 }
             });

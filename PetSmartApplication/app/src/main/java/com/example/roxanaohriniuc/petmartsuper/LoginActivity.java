@@ -26,15 +26,10 @@ import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
 
-    protected TextView mSignUpTextView;
-    protected final PetMartSuperUtils utils = new PetMartSuperUtils();
-    protected EditText mUserName;
-    protected EditText mPassword;
-    protected Button mLoginButton;
-    protected TextView mInformation;
     String url = "http://shoppingcart-api-8000.herokuapp.com/api/accounts";
     private  static final String TAG = MainActivity.class.getSimpleName();
     ConnectivityManager manager;
+    protected final PetMartSuperUtils utils = new PetMartSuperUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         manager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        mSignUpTextView = (TextView) findViewById(R.id.signUpText);
+        TextView mSignUpTextView = (TextView) findViewById(R.id.signUpText);
         mSignUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,18 +47,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mUserName = (EditText) findViewById(R.id.usernameField);
-        mPassword = (EditText) findViewById(R.id.passwordField);
-        mLoginButton = (Button) findViewById(R.id.loginButton);
-        mInformation = (TextView) findViewById(R.id.alertUserEmptyFieldText);
-
+        Button mLoginButton = (Button) findViewById(R.id.loginButton);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String username = mUserName.getText().toString();
-                final String password = mPassword.getText().toString();
-                username.trim();
-                password.trim();
+                TextView mInformation = (TextView) findViewById(R.id.alertUserEmptyFieldText);
+                TextView mUserName = (EditText) findViewById(R.id.usernameField);
+                TextView mPassword = (EditText) findViewById(R.id.passwordField);
+
+                final String username = mUserName.getText().toString().trim();
+                final String password = mPassword.getText().toString().trim();
 
                 if (username.isEmpty() || password.isEmpty()) {
                     mInformation.setText(R.string.alert_login);
@@ -88,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                                         JSONObject obj = new JSONObject(jsonAccount);
                                         if (obj.getBoolean("admin")) {
                                             // load admin page
-                                            Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                             intent.putExtra("jsonAccount", jsonAccount);
                                             startActivity(intent);
 
@@ -110,8 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, R.string.network_unavailable_message, Toast.LENGTH_LONG);
                     }
                 }
-                utils.waitHere();
-                mUserName.setText("");
                 mPassword.setText("");
             }
         });
@@ -127,16 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.signout) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+       return true;
     }
 
 }

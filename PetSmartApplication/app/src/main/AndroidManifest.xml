@@ -52,7 +52,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".AdminLoginActivity"
+            android:name=".AdminActivity"
             android:label="@string/title_activity_admin_login" >
         </activity>
         <activity

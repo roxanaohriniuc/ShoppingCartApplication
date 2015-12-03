@@ -21,11 +21,11 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class AdminLoginActivity extends ListActivity {
+public class AdminActivity extends ListActivity {
     //
     String url = "http://shoppingcart-api-8000.herokuapp.com/api/inventory";
     private  static final String TAG = MainActivity.class.getSimpleName();
-    private AdminInventoryListAdapter mInventoryListAdapter;
+    private AdminListAdapter mInventoryListAdapter;
     private Button mViewProfits;
     private Inventory inventory = Inventory.getInstance();
     protected Button mAddItem;
@@ -67,15 +67,15 @@ public class AdminLoginActivity extends ListActivity {
         else{
             Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG );
         }
-        // insert InventoryListAdapter
-        mInventoryListAdapter = new AdminInventoryListAdapter(AdminLoginActivity.this, manager);
+        // insert MainListAdapter
+        mInventoryListAdapter = new AdminListAdapter(AdminActivity.this, manager);
         setListAdapter(mInventoryListAdapter);
 
         mAddItem = (Button) findViewById(R.id.adminAddProductToInventory);
         mAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminLoginActivity.this, EditProductActivity.class);
+                Intent intent = new Intent(AdminActivity.this, EditProductActivity.class);
                 startActivity(intent);
             }
         });
@@ -85,7 +85,7 @@ public class AdminLoginActivity extends ListActivity {
             public void onClick(View v) {
                 // start view profits activity
                 // pass over the profit
-                Intent intent = new Intent(AdminLoginActivity.this, ViewProfitsActivity.class );
+                Intent intent = new Intent(AdminActivity.this, ViewProfitsActivity.class );
                 startActivity(intent);
             }
         });
@@ -116,7 +116,7 @@ public class AdminLoginActivity extends ListActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.signout) {
-            Intent intent = new Intent(AdminLoginActivity.this, LoginActivity.class);
+            Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             startActivity(intent);
             return true;
         }

@@ -58,7 +58,7 @@ public class ViewProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             // return to inventory view
-                Intent intent = new Intent(ViewProductActivity.this, AdminLoginActivity.class);
+                Intent intent = new Intent(ViewProductActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });
