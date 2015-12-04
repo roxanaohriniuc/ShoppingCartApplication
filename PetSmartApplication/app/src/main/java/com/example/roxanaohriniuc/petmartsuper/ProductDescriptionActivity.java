@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Product description activity
+ */
 public class ProductDescriptionActivity extends AppCompatActivity {
     protected Button mAddToCartButton;
     protected Button mReturnToSearchButton;
@@ -27,9 +30,11 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     Inventory inventory = Inventory.getInstance();
 
 
-
-
-
+    /**
+     * On create activity
+     * initalize fields and set click events
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +115,11 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * create options menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -117,6 +127,11 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * logout clicked
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
