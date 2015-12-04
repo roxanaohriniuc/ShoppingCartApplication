@@ -9,9 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * Product Details View
- */
 public class ViewProductActivity extends AppCompatActivity {
 
     protected TextView mProductName;
@@ -25,10 +22,6 @@ public class ViewProductActivity extends AppCompatActivity {
     protected  Inventory inventory = Inventory.getInstance();
 
 
-    /**
-     * On create event for view
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
