@@ -24,6 +24,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+/**
+ *  For admin to view profits
+ */
 public class ViewProfitsActivity extends AppCompatActivity {
     protected PetMartSuperUtils utils = new PetMartSuperUtils();
     private  static final String TAG = ViewProfitsActivity.class.getSimpleName();
@@ -31,7 +34,10 @@ public class ViewProfitsActivity extends AppCompatActivity {
     protected Button mReturn;
 ;
 
-
+    /**
+     * On Create event for view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +98,11 @@ public class ViewProfitsActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Create options menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -100,6 +110,11 @@ public class ViewProfitsActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * On logout clicked
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

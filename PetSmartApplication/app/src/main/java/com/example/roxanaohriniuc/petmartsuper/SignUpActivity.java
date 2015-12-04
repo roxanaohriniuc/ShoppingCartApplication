@@ -24,6 +24,9 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+/**
+ * Registration activity
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String TAG = SignUpActivity.class.getSimpleName();
@@ -39,6 +42,10 @@ public class SignUpActivity extends AppCompatActivity {
     private String url = "http://shoppingcart-api-8000.herokuapp.com/api/accounts";
     ConnectivityManager manager;
 
+    /**
+     * Create event for view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
          manager = (ConnectivityManager)
@@ -117,6 +124,11 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * create options meanu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -124,6 +136,11 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * On Options Item Selected
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

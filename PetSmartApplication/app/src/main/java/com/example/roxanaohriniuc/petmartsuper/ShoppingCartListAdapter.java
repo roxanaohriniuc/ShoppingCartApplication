@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+/**
+ * Adapter for listview in shopping cart activity
+ */
 public class ShoppingCartListAdapter extends BaseAdapter {
     ShoppingCart shoppingCart = ShoppingCart.getInstance();
     Inventory inventory = Inventory.getInstance();
@@ -27,21 +29,45 @@ public class ShoppingCartListAdapter extends BaseAdapter {
         mManager = manager;
         mTotalText = totalText;
     }
+
+    /**
+     * Count of items in list
+     * @return
+     */
     @Override
     public int getCount() {
         return shoppingCart.getProducts().size();
     }
 
+    /**
+     * Items in list
+     * @param position
+     * @return
+     */
     @Override
     public CartItem getItem(int position) {
         return shoppingCart.getProducts().get(position);
     }
 
+    /**
+     * Item id
+     * @param position
+     * @return
+     */
     @Override
     public long getItemId(int position) {
         return 0;
     }
 
+    /**
+     * Set view for list items
+     * Set click events for buttons in view
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
